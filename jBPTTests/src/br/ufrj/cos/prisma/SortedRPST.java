@@ -12,6 +12,7 @@ import org.jbpt.graph.DirectedEdge;
 import org.jbpt.graph.DirectedGraph;
 import org.jbpt.hypergraph.abs.Vertex;
 
+import br.ufrj.cos.prisma.model.CustomIRPSTNode;
 import br.ufrj.cos.prisma.utils.StringUtils;
 
 public class SortedRPST extends RPST<DirectedEdge, Vertex> {
@@ -23,56 +24,62 @@ public class SortedRPST extends RPST<DirectedEdge, Vertex> {
 	}
 
 	public void traverseRPST() {
-		traverseFromNode(root, 0);
+		CustomIRPSTNode customRoot = new CustomIRPSTNode(root);
+		traverseFromNode(customRoot, 0);
 	}
 
-	public void traverseFromNode(IRPSTNode<DirectedEdge, Vertex> rootnode,
-			int level) {
+	public void traverseFromNode(CustomIRPSTNode rootnode, int level) {
 
 		Collection<IRPSTNode<DirectedEdge, Vertex>> children = getSortedChildren(rootnode);
-		String type = WorkflowType.SEQUENCE.toString();
+		WorkflowType type = WorkflowType.SEQUENCE;
+
 		// conditional
 		if (children == null) {
 			children = getChildren(rootnode);
-			type = WorkflowType.CONDITIONAL.toString();
+			type = WorkflowType.CONDITIONAL;
+
 		} else {
 			IRPSTNode<DirectedEdge, Vertex> first = ((List<IRPSTNode<DirectedEdge, Vertex>>) children)
 					.get(0);
 			IRPSTNode<DirectedEdge, Vertex> last = ((List<IRPSTNode<DirectedEdge, Vertex>>) children)
 					.get(children.size() - 1);
-			
+
 			if (first.equals(last)) {
-				type = WorkflowType.LOOP.toString();
+				type = WorkflowType.LOOP;
 				children.remove(last);
 			}
 		}
 
-		printNode(level, type, rootnode);
+		rootnode.setWorkflowType(type);
+		printNode(level, rootnode);
 
 		for (IRPSTNode<DirectedEdge, Vertex> child : children) {
 			int childLevel = level + 1;
 			boolean isTrivial = child.getType().equals(TCType.TRIVIAL);
+			CustomIRPSTNode childCustomNode = new CustomIRPSTNode(child);
 
 			if (isTrivial) {
-				printNode(childLevel, WorkflowType.ACTIVITY.toString(), child);
+				childCustomNode.setWorkflowType(WorkflowType.EDGE);
+				printNode(childLevel, childCustomNode);
 				continue;
 			}
 
-			traverseFromNode(child, childLevel);
+			traverseFromNode(childCustomNode, childLevel);
 		}
 	}
 
-	private static void printNode(int level, String type,
-			IRPSTNode<DirectedEdge, Vertex> node) {
+	private static void printNode(int level, CustomIRPSTNode node) {
 		String format = "%s [%s] %s: (Entry,Exit) -> (%s,%s) - F %s";
 		String levelTab = StringUtils.repeat("\t", level);
-		System.out.println(String.format(format, levelTab, type,
+		String workflowType = node.getWorkflowType() != null ? node
+				.getWorkflowType().toString() : "";
+		System.out.println(String.format(format, levelTab, workflowType,
 				node.getName(), node.getEntry(), node.getExit(),
 				node.getFragment()));
 	}
 
 	private List<IRPSTNode<DirectedEdge, Vertex>> getSortedChildren(
-			IRPSTNode<DirectedEdge, Vertex> parentNode) {
+			CustomIRPSTNode parentNode) {
 		Vertex parentEntryVertex = parentNode.getEntry();
 		Vertex parentExitVertex = parentNode.getExit();
 
@@ -133,4 +140,7 @@ public class SortedRPST extends RPST<DirectedEdge, Vertex> {
 		return sortedChildren;
 	}
 
+	public Set<IRPSTNode<DirectedEdge, Vertex>> getChildren(CustomIRPSTNode node) {
+		return getChildren(node.getIRPSTNode());
+	}
 }

@@ -4,6 +4,6 @@ public enum WorkflowType {
 	SEQUENCE,
 	LOOP,
 	CONDITIONAL,
-	ACTIVITY
+	EDGE
 }
 
