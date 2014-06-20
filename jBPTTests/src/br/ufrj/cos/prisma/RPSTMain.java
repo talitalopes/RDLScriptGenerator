@@ -16,8 +16,6 @@ public class RPSTMain {
 		System.out.println(">>>> RPST tree \n");
 		SortedRPST rpst = new SortedRPST(graph);
 		rpst.traverseRPST();
-				
-//		printRPST(rpst, root, 0);
 	}
 
 	private static DirectedGraph getGraph(ProcessModel p) {
@@ -62,32 +60,5 @@ public class RPSTMain {
 
 		return p;
 	}
-
-//	private static void printRPST(RPST<DirectedEdge, Vertex> rpst,
-//			IRPSTNode<DirectedEdge, Vertex> rootnode, int level) {
-//		Set<IRPSTNode<DirectedEdge, Vertex>> children = rpst
-//				.getChildren(rootnode);
-//		printNode(level, rootnode);
-//
-//		for (IRPSTNode<DirectedEdge, Vertex> child : children) {
-//			int childLevel = level + 1;
-//			boolean isTrivial = child.getType().equals(TCType.TRIVIAL);
-//			if (isTrivial) {
-//				printNode(childLevel, child);
-//				continue;
-//			}
-//
-//			printRPST(rpst, child, childLevel);
-//		}
-//	}
-
-//	private static void printNode(int level,
-//			IRPSTNode<DirectedEdge, Vertex> node) {
-//		String format = "%s [%s] %s: (Entry,Exit) -> (%s,%s) - F %s";
-//		String levelTab = StringUtils.repeat("\t", level);
-//		System.out.println(String.format(format, levelTab, node.getType()
-//				.toString(), node.getName(), node.getEntry(), node.getExit(),
-//				node.getFragment()));
-//	}
 	
 }
