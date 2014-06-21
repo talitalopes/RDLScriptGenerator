@@ -132,7 +132,11 @@ public class SortedRPST extends RPST<DirectedEdge, Vertex> {
 			CustomIRPSTNode cnode = new CustomIRPSTNode(sortedChildren.get(i),
 					parentNode.getTreeLevel() + 1);
 			cnode.setIndex(i);
-			customChildren.add(cnode);
+			if (parentNode.isConditional()) {
+				cnode.setCondition(true);
+			}
+
+			customChildren.add(cnode);			
 		}
 
 		return customChildren;

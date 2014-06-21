@@ -14,6 +14,7 @@ public class CustomIRPSTNode extends Vertex implements IRPSTNode<DirectedEdge, V
 	WorkflowType workflowType;
 	int treeLevel;
 	int index;
+	boolean condition;
 	
 	public CustomIRPSTNode(IRPSTNode<DirectedEdge, Vertex> node) {
 		this.node = node;
@@ -176,5 +177,16 @@ public class CustomIRPSTNode extends Vertex implements IRPSTNode<DirectedEdge, V
 	public void setIndex(int index) {
 		this.index = index;
 	}
+
+	public boolean isCondition() {
+		return condition;
+	}
+
+	public void setCondition(boolean condition) {
+		this.condition = condition;
+	}
 	
+	public boolean isConditional() {
+		return this.workflowType.equals(WorkflowType.CONDITIONAL);
+	}
 }
