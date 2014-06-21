@@ -1,7 +1,6 @@
 package br.ufrj.cos.prisma;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -24,65 +23,38 @@ public class SortedRPST extends RPST<DirectedEdge, Vertex> {
 	}
 
 	public void traverseRPST() {
-		CustomIRPSTNode customRoot = new CustomIRPSTNode(root);
-		traverseFromNode(customRoot, 0);
+		CustomIRPSTNode customRoot = new CustomIRPSTNode(root, 0);
+		traverseFromNode(customRoot);
 	}
 
-	public void traverseFromNode(CustomIRPSTNode rootnode, int level) {
+	public void traverseFromNode(CustomIRPSTNode rootnode) {
+		List<CustomIRPSTNode> children = getSortedChildren(rootnode);
+		printNode(rootnode);
 
-		Collection<IRPSTNode<DirectedEdge, Vertex>> children = getSortedChildren(rootnode);
-		WorkflowType type = WorkflowType.SEQUENCE;
-
-		// conditional
-		if (children == null) {
-			children = getChildren(rootnode);
-			type = WorkflowType.CONDITIONAL;
-
-		} else {
-			IRPSTNode<DirectedEdge, Vertex> first = ((List<IRPSTNode<DirectedEdge, Vertex>>) children)
-					.get(0);
-			IRPSTNode<DirectedEdge, Vertex> last = ((List<IRPSTNode<DirectedEdge, Vertex>>) children)
-					.get(children.size() - 1);
-
-			if (first.equals(last)) {
-				type = WorkflowType.LOOP;
-				children.remove(last);
-			}
-		}
-
-		rootnode.setWorkflowType(type);
-		printNode(level, rootnode);
-
-		for (IRPSTNode<DirectedEdge, Vertex> child : children) {
-			int childLevel = level + 1;
+		for (CustomIRPSTNode child : children) {
 			boolean isTrivial = child.getType().equals(TCType.TRIVIAL);
-			CustomIRPSTNode childCustomNode = new CustomIRPSTNode(child);
-
 			if (isTrivial) {
-				childCustomNode.setWorkflowType(WorkflowType.EDGE);
-				printNode(childLevel, childCustomNode);
+				child.setWorkflowType(WorkflowType.EDGE);
+				printNode(child);
 				continue;
 			}
-
-			traverseFromNode(childCustomNode, childLevel);
+			traverseFromNode(child);
 		}
 	}
 
-	private static void printNode(int level, CustomIRPSTNode node) {
-		String format = "%s [%s] %s: (Entry,Exit) -> (%s,%s) - F %s";
-		String levelTab = StringUtils.repeat("\t", level);
+	private static void printNode(CustomIRPSTNode node) {
+		String levelTab = StringUtils.repeat("\t", node.getTreeLevel());
+		String format = "%s [%d %s] %s: (Entry,Exit) -> (%s,%s) - F %s";
+
 		String workflowType = node.getWorkflowType() != null ? node
 				.getWorkflowType().toString() : "";
-		System.out.println(String.format(format, levelTab, workflowType,
+
+		System.out.println(String.format(format, levelTab, node.getIndex(), workflowType,
 				node.getName(), node.getEntry(), node.getExit(),
 				node.getFragment()));
 	}
 
-	private List<IRPSTNode<DirectedEdge, Vertex>> getSortedChildren(
-			CustomIRPSTNode parentNode) {
-		Vertex parentEntryVertex = parentNode.getEntry();
-		Vertex parentExitVertex = parentNode.getExit();
-
+	private List<CustomIRPSTNode> getSortedChildren(CustomIRPSTNode parentNode) {
 		Set<IRPSTNode<DirectedEdge, Vertex>> childrenList = getChildren(parentNode);
 		List<IRPSTNode<DirectedEdge, Vertex>> children = new ArrayList<IRPSTNode<DirectedEdge, Vertex>>(
 				childrenList);
@@ -93,54 +65,76 @@ public class SortedRPST extends RPST<DirectedEdge, Vertex> {
 
 		List<IRPSTNode<DirectedEdge, Vertex>> childrenToRemove = new ArrayList<IRPSTNode<DirectedEdge, Vertex>>();
 		for (IRPSTNode<DirectedEdge, Vertex> child : children) {
-			if (child.getEntry().equals(parentEntryVertex)) {
+			if (child.getEntry().equals(parentNode.getEntry())) {
 				firstNode = child;
 				childrenToRemove.add(child);
 			}
 
-			if (child.getExit().equals(parentExitVertex)) {
+			if (child.getExit().equals(parentNode.getExit())) {
 				lastNode = child;
 				childrenToRemove.add(child);
 			}
 		}
-
 		children.removeAll(childrenToRemove);
-		// all nodes have same entry and exit vertexes (conditional)
 
+		List<IRPSTNode<DirectedEdge, Vertex>> sortedChildren = new ArrayList<IRPSTNode<DirectedEdge, Vertex>>();
 		if (children.size() == 0) {
-
-			// verify if all nodes had the same entry and exit
+			// Verify if all nodes had the same entry and exit
 			boolean isConditional = firstNode.getEntry().equals(
 					lastNode.getEntry())
 					&& firstNode.getExit().equals(lastNode.getExit());
 
+			// Assign an workflow type to the parent node
+			parentNode.setWorkflowType(WorkflowType.SEQUENCE);
 			if (isConditional) {
-				return null;
+				parentNode.setWorkflowType(WorkflowType.CONDITIONAL);
 			}
 
-			return new ArrayList<IRPSTNode<DirectedEdge, Vertex>>(childrenList);
+			sortedChildren = new ArrayList<IRPSTNode<DirectedEdge, Vertex>>(
+					childrenList);
+
+		} else {
+			sortedChildren.add(firstNode);
+			sortedChildren.add(lastNode);
+
+			for (IRPSTNode<DirectedEdge, Vertex> child : children) {
+				if (child.getEntry().equals(firstNode.getExit())) {
+					sortedChildren.add(1, child);
+					continue;
+				}
+
+				if (child.getExit().equals(lastNode.getEntry())) {
+					sortedChildren.add(sortedChildren.size() - 2, child);
+					continue;
+				}
+			}
+
+			parentNode.setWorkflowType(WorkflowType.SEQUENCE);
+			if (firstNode.equals(lastNode)) {
+				parentNode.setWorkflowType(WorkflowType.LOOP);
+				sortedChildren.remove(lastNode);
+			}
 		}
 
-		List<IRPSTNode<DirectedEdge, Vertex>> sortedChildren = new ArrayList<IRPSTNode<DirectedEdge, Vertex>>();
-		sortedChildren.add(firstNode);
-		sortedChildren.add(lastNode);
-
-		for (IRPSTNode<DirectedEdge, Vertex> child : children) {
-			if (child.getEntry().equals(firstNode.getExit())) {
-				sortedChildren.add(1, child);
-				continue;
-			}
-
-			if (child.getExit().equals(lastNode.getEntry())) {
-				sortedChildren.add(sortedChildren.size() - 2, child);
-				continue;
-			}
-		}
-
-		return sortedChildren;
+		return getCustomIRPSTNodes(parentNode, sortedChildren);
 	}
 
 	public Set<IRPSTNode<DirectedEdge, Vertex>> getChildren(CustomIRPSTNode node) {
 		return getChildren(node.getIRPSTNode());
+	}
+
+	private List<CustomIRPSTNode> getCustomIRPSTNodes(
+			CustomIRPSTNode parentNode,
+			List<IRPSTNode<DirectedEdge, Vertex>> sortedChildren) {
+
+		List<CustomIRPSTNode> customChildren = new ArrayList<CustomIRPSTNode>();
+		for (int i = 0; i < sortedChildren.size(); i++) {
+			CustomIRPSTNode cnode = new CustomIRPSTNode(sortedChildren.get(i),
+					parentNode.getTreeLevel() + 1);
+			cnode.setIndex(i);
+			customChildren.add(cnode);
+		}
+
+		return customChildren;
 	}
 }

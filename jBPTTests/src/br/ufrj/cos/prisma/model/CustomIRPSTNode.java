@@ -12,11 +12,18 @@ import br.ufrj.cos.prisma.WorkflowType;
 public class CustomIRPSTNode extends Vertex implements IRPSTNode<DirectedEdge, Vertex> {
 	IRPSTNode<DirectedEdge, Vertex> node;
 	WorkflowType workflowType;
+	int treeLevel;
+	int index;
 	
 	public CustomIRPSTNode(IRPSTNode<DirectedEdge, Vertex> node) {
 		this.node = node;
 	}
-	
+
+	public CustomIRPSTNode(IRPSTNode<DirectedEdge, Vertex> node, int level) {
+		this.node = node;
+		this.treeLevel = level;
+	}
+
 	public IRPSTNode<DirectedEdge, Vertex> getIRPSTNode() {
 		return node;
 	}
@@ -154,5 +161,20 @@ public class CustomIRPSTNode extends Vertex implements IRPSTNode<DirectedEdge, V
 		this.workflowType = workflowType;
 	}
 
+	public int getTreeLevel() {
+		return treeLevel;
+	}
+
+	public void setTreeLevel(int treeLevel) {
+		this.treeLevel = treeLevel;
+	}
+
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
 	
 }
