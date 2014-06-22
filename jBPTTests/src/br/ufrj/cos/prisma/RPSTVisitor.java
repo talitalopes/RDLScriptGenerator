@@ -12,9 +12,8 @@ import org.jbpt.graph.DirectedGraph;
 import org.jbpt.hypergraph.abs.Vertex;
 
 import br.ufrj.cos.prisma.model.CustomIRPSTNode;
-import br.ufrj.cos.prisma.utils.StringUtils;
 
-public class RPSTVisitor extends RPST<DirectedEdge, Vertex> {
+public abstract class RPSTVisitor extends RPST<DirectedEdge, Vertex> {
 	DirectedGraph graph;
 
 	public RPSTVisitor(DirectedGraph graph) {
@@ -62,17 +61,7 @@ public class RPSTVisitor extends RPST<DirectedEdge, Vertex> {
 		}
 	}
 
-	private static void printNode(CustomIRPSTNode node) {
-		String levelTab = StringUtils.repeat("\t", node.getTreeLevel());
-		String format = "%s [%d %s] %s: (Entry,Exit) -> (%s,%s) - F %s";
-
-		String workflowType = node.getWorkflowType() != null ? node
-				.getWorkflowType().toString() : "";
-
-		System.out.println(String.format(format, levelTab, node.getIndex(),
-				workflowType, node.getName(), node.getEntry(), node.getExit(),
-				node.getFragment()));
-	}
+	protected abstract void printNode(CustomIRPSTNode node);
 
 	private List<CustomIRPSTNode> getSortedChildren(CustomIRPSTNode parentNode) {
 		Set<IRPSTNode<DirectedEdge, Vertex>> childrenList = getChildren(parentNode);

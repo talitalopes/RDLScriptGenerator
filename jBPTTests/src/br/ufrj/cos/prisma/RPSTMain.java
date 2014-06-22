@@ -21,7 +21,7 @@ public class RPSTMain {
 		}
 		
 		System.out.println(">>>> RPST tree \n");
-		RPSTVisitor rpst = new RPSTVisitor(graph);
+		RDLVisitor rpst = new RDLVisitor(graph);
 		rpst.traverseRPST();
 	}
 
@@ -109,7 +109,6 @@ public class RPSTMain {
 		// Create the tasks
 		Activity start = new Activity("Start");
 		Activity a0 = new Activity("0");
-		Activity b1 = new Activity("b1");
 		Activity a11 = new Activity("11");
 		Activity a12 = new Activity("12");
 		Activity a14 = new Activity("14");
