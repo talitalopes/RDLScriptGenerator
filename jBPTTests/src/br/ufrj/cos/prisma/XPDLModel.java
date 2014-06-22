@@ -100,6 +100,8 @@ public class XPDLModel {
 			
 			if (name.equals(Constants.EXCLUSIVE_GATEWAY)) {
 				addXORGateway(id, name);
+			} else if (name.contains("EVENT")) {
+				continue;
 			} else {
 				addProcessActivity(id, name);
 			}

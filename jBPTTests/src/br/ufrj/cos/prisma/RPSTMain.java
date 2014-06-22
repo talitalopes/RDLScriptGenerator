@@ -10,10 +10,15 @@ import org.jbpt.pm.XorGateway;
 public class RPSTMain {
 
 	public static void main(String[] args) {
-//		ProcessModel p = createTestProcess();
+		boolean test = false;
+		ProcessModel p = createTestProcess();
 
 		XPDLModel xpdlModel = new XPDLModel("input/gef5.xpdl");
+		
 		DirectedGraph graph = xpdlModel.getGraph();
+		if (test) {
+			graph = getGraph(p);
+		}
 		
 		System.out.println(">>>> RPST tree \n");
 		SortedRPST rpst = new SortedRPST(graph);
