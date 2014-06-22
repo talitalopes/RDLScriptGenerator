@@ -189,4 +189,5 @@ public class CustomIRPSTNode extends Vertex implements IRPSTNode<DirectedEdge, V
 	public boolean isConditional() {
 		return this.workflowType.equals(WorkflowType.CONDITIONAL);
 	}
+	
 }
