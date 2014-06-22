@@ -13,6 +13,9 @@ public class RPSTMain {
 		ProcessModel p = createTestProcess();
 		DirectedGraph graph = getGraph(p);
 
+		XPDLParser parser = new XPDLParser("input/gef5.xpdl");
+		System.out.println(parser.getDocument());
+		
 		System.out.println(">>>> RPST tree \n");
 		SortedRPST rpst = new SortedRPST(graph);
 		rpst.traverseRPST();
