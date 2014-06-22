@@ -10,18 +10,17 @@ import org.jbpt.pm.XorGateway;
 public class RPSTMain {
 
 	public static void main(String[] args) {
-		ProcessModel p = createTestProcess();
-		DirectedGraph graph = getGraph(p);
+//		ProcessModel p = createTestProcess();
 
-		XPDLParser parser = new XPDLParser("input/gef5.xpdl");
-		System.out.println(parser.getDocument());
+		XPDLParser xpdlModel = new XPDLParser("input/gef5.xpdl");
+		DirectedGraph graph = xpdlModel.getGraph();
 		
 		System.out.println(">>>> RPST tree \n");
 		SortedRPST rpst = new SortedRPST(graph);
 		rpst.traverseRPST();
 	}
 
-	private static DirectedGraph getGraph(ProcessModel p) {
+	public static DirectedGraph getGraph(ProcessModel p) {
 		DirectedGraph graph = new DirectedGraph();
 
 		for (ControlFlow<FlowNode> cf : p.getEdges()) {
@@ -31,7 +30,7 @@ public class RPSTMain {
 		return graph;
 	}
 
-	private static ProcessModel createTestProcess() {
+	public static ProcessModel createTestProcess() {
 		// Create the process graph
 		ProcessModel p = new ProcessModel();
 

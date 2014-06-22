@@ -9,7 +9,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.jbpt.graph.DirectedGraph;
 import org.jbpt.pm.Activity;
+import org.jbpt.pm.ControlFlow;
 import org.jbpt.pm.FlowNode;
 import org.jbpt.pm.ProcessModel;
 import org.jbpt.pm.XorGateway;
@@ -42,6 +44,16 @@ public class XPDLParser {
 	
 	public ProcessModel getProcessModel() {
 		return model;
+	}
+	
+	public DirectedGraph getGraph() {
+		DirectedGraph graph = new DirectedGraph();
+
+		for (ControlFlow<FlowNode> cf : this.model.getEdges()) {
+			graph.addEdge(cf.getSource(), cf.getTarget());
+		}
+
+		return graph;
 	}
 	
 	private void parseModelFromFile(String file) {
