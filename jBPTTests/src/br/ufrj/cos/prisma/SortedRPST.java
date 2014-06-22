@@ -104,7 +104,7 @@ public class SortedRPST extends RPST<DirectedEdge, Vertex> {
 				}
 
 				if (child.getExit().equals(lastNode.getEntry())) {
-					sortedChildren.add(sortedChildren.size() - 2, child);
+					sortedChildren.add(sortedChildren.size() - 1, child);
 					continue;
 				}
 			}
