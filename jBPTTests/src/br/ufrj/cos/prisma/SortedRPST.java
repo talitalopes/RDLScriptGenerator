@@ -107,6 +107,8 @@ public class SortedRPST extends RPST<DirectedEdge, Vertex> {
 					sortedChildren.add(sortedChildren.size() - 1, child);
 					continue;
 				}
+				
+				System.out.println("ATENÇÃO: NÓ NÃO ADICIONADO À SEQUENCIA: " + child);
 			}
 
 			parentNode.setWorkflowType(WorkflowType.SEQUENCE);
