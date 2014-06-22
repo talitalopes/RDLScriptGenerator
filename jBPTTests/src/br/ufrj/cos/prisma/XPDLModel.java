@@ -23,12 +23,12 @@ import org.xml.sax.SAXException;
 
 import br.ufrj.cos.prisma.utils.Constants;
 
-public class XPDLParser {
+public class XPDLModel {
 	ProcessModel model;
 	Document doc;
 	Map<String,FlowNode> flowNodesMap;
 	
-	public XPDLParser(String file) {
+	public XPDLModel(String file) {
 		if (file == null) {
 			System.out.println("Error: invalid file path");
 			return;

@@ -12,7 +12,7 @@ public class RPSTMain {
 	public static void main(String[] args) {
 //		ProcessModel p = createTestProcess();
 
-		XPDLParser xpdlModel = new XPDLParser("input/gef5.xpdl");
+		XPDLModel xpdlModel = new XPDLModel("input/gef5.xpdl");
 		DirectedGraph graph = xpdlModel.getGraph();
 		
 		System.out.println(">>>> RPST tree \n");
