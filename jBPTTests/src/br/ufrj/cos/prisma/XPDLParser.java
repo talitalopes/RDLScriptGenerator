@@ -83,8 +83,8 @@ public class XPDLParser {
 			}
 
 			Element element = (Element) node;
-			String id = element.getAttribute("Id");
-			String name = element.getAttribute("Name");
+			String id = element.getAttribute(Constants.XPDL_ATTRIBUTE_ID);
+			String name = element.getAttribute(Constants.XPDL_ATTRIBUTE_NAME);
 			
 			if (name.equals(Constants.EXCLUSIVE_GATEWAY)) {
 				addXORGateway(id, name);
@@ -113,7 +113,23 @@ public class XPDLParser {
 	}
 	
 	private void createControlFlows() {
+		NodeList nodes = doc.getElementsByTagName(Constants.XPDL_TRANSITION_TAG);
 		
+		for (int i = 0; i < nodes.getLength(); i++) {
+			Node node = nodes.item(i);
+			if (node == null || node.getNodeType() != Node.ELEMENT_NODE) {
+				continue;
+			}
+
+			Element element = (Element) node;
+			String source = element.getAttribute(Constants.XPDL_ATTRIBUTE_SOURCE);
+			String target = element.getAttribute(Constants.XPDL_ATTRIBUTE_TARGET);
+			
+			FlowNode sourceNode = flowNodesMap.get(source);
+			FlowNode targetNode = flowNodesMap.get(target);
+			
+			model.addControlFlow(sourceNode, targetNode);
+		}
 	}
 	
 }
