@@ -21,7 +21,7 @@ public class RPSTMain {
 		}
 		
 		System.out.println(">>>> RPST tree \n");
-		SortedRPST rpst = new SortedRPST(graph);
+		RPSTVisitor rpst = new RPSTVisitor(graph);
 		rpst.traverseRPST();
 	}
 

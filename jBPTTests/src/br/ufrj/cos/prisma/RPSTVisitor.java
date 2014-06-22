@@ -14,10 +14,10 @@ import org.jbpt.hypergraph.abs.Vertex;
 import br.ufrj.cos.prisma.model.CustomIRPSTNode;
 import br.ufrj.cos.prisma.utils.StringUtils;
 
-public class SortedRPST extends RPST<DirectedEdge, Vertex> {
+public class RPSTVisitor extends RPST<DirectedEdge, Vertex> {
 	DirectedGraph graph;
 
-	public SortedRPST(DirectedGraph graph) {
+	public RPSTVisitor(DirectedGraph graph) {
 		super(graph);
 		this.graph = graph;
 	}
