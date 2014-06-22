@@ -31,7 +31,27 @@ public class SortedRPST extends RPST<DirectedEdge, Vertex> {
 		List<CustomIRPSTNode> children = getSortedChildren(rootnode);
 		printNode(rootnode);
 
+		// sort children by type inside a conditional SEQUENCE -> EDGE
+		if (rootnode.isConditional()) {
+			List<CustomIRPSTNode> sortedChildren = new ArrayList<CustomIRPSTNode>();
+			for (CustomIRPSTNode child : children) {
+				boolean isTrivial = child.getType().equals(TCType.TRIVIAL);
+				if (isTrivial) {
+					sortedChildren.add(child);
+				} else {
+					sortedChildren.add(0, child);
+				}
+			}
+			children = sortedChildren;
+		}
+
 		for (CustomIRPSTNode child : children) {
+			// if (rootnode.getWorkflowType().equals(WorkflowType.COMPLEX)) {
+			// System.out.println("complex: " + getChildren(rootnode).size());
+			// printNode(child);
+			// continue;
+			// }
+
 			boolean isTrivial = child.getType().equals(TCType.TRIVIAL);
 			if (isTrivial) {
 				child.setWorkflowType(WorkflowType.EDGE);
@@ -49,8 +69,8 @@ public class SortedRPST extends RPST<DirectedEdge, Vertex> {
 		String workflowType = node.getWorkflowType() != null ? node
 				.getWorkflowType().toString() : "";
 
-		System.out.println(String.format(format, levelTab, node.getIndex(), workflowType,
-				node.getName(), node.getEntry(), node.getExit(),
+		System.out.println(String.format(format, levelTab, node.getIndex(),
+				workflowType, node.getName(), node.getEntry(), node.getExit(),
 				node.getFragment()));
 	}
 
@@ -64,6 +84,7 @@ public class SortedRPST extends RPST<DirectedEdge, Vertex> {
 		IRPSTNode<DirectedEdge, Vertex> lastNode = null;
 
 		List<IRPSTNode<DirectedEdge, Vertex>> childrenToRemove = new ArrayList<IRPSTNode<DirectedEdge, Vertex>>();
+				
 		for (IRPSTNode<DirectedEdge, Vertex> child : children) {
 			if (child.getEntry().equals(parentNode.getEntry())) {
 				firstNode = child;
@@ -97,20 +118,36 @@ public class SortedRPST extends RPST<DirectedEdge, Vertex> {
 			sortedChildren.add(firstNode);
 			sortedChildren.add(lastNode);
 
-			for (IRPSTNode<DirectedEdge, Vertex> child : children) {
-				if (child.getEntry().equals(firstNode.getExit())) {
-					sortedChildren.add(1, child);
-					continue;
-				}
-
-				if (child.getExit().equals(lastNode.getEntry())) {
-					sortedChildren.add(sortedChildren.size() - 1, child);
-					continue;
+			while (children.size() > 0) {
+				IRPSTNode<DirectedEdge, Vertex> child = children.remove(0);
+				boolean added = false;
+				
+				for (int i = 0; i < sortedChildren.size(); i++) {
+					IRPSTNode<DirectedEdge, Vertex> node = sortedChildren.get(i);
+					int index = -2;
+					
+					if (child.getEntry().equals(node.getExit())) {
+						index = i + 1;
+					}
+					
+					if (child.getExit().equals(node.getEntry())) {
+						index = i;
+					}
+										
+					if (index != -2) {
+						sortedChildren.add(index, child);
+						added = true;
+						i = sortedChildren.size();
+					}
+					
 				}
 				
-				System.out.println("ATENÇÃO: NÓ NÃO ADICIONADO À SEQUENCIA: " + child);
+				if (!added) {
+					children.add(child);
+				}
+				
 			}
-
+			
 			parentNode.setWorkflowType(WorkflowType.SEQUENCE);
 			if (firstNode.equals(lastNode)) {
 				parentNode.setWorkflowType(WorkflowType.LOOP);
@@ -138,7 +175,7 @@ public class SortedRPST extends RPST<DirectedEdge, Vertex> {
 				cnode.setCondition(true);
 			}
 
-			customChildren.add(cnode);			
+			customChildren.add(cnode);
 		}
 
 		return customChildren;
