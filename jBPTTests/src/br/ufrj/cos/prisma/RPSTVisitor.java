@@ -45,12 +45,6 @@ public abstract class RPSTVisitor extends RPST<DirectedEdge, Vertex> {
 		}
 
 		for (CustomIRPSTNode child : children) {
-			// if (rootnode.getWorkflowType().equals(WorkflowType.COMPLEX)) {
-			// System.out.println("complex: " + getChildren(rootnode).size());
-			// printNode(child);
-			// continue;
-			// }
-
 			boolean isTrivial = child.getType().equals(TCType.TRIVIAL);
 			if (isTrivial) {
 				child.setWorkflowType(WorkflowType.EDGE);
@@ -69,30 +63,32 @@ public abstract class RPSTVisitor extends RPST<DirectedEdge, Vertex> {
 				childrenList);
 
 		// find first and last nodes
-		IRPSTNode<DirectedEdge, Vertex> firstNode = null;
-		IRPSTNode<DirectedEdge, Vertex> lastNode = null;
+		CustomIRPSTNode customFirstNode = null;
+		CustomIRPSTNode customLastNode = null;
 
 		List<IRPSTNode<DirectedEdge, Vertex>> childrenToRemove = new ArrayList<IRPSTNode<DirectedEdge, Vertex>>();
-				
+
 		for (IRPSTNode<DirectedEdge, Vertex> child : children) {
 			if (child.getEntry().equals(parentNode.getEntry())) {
-				firstNode = child;
+				customFirstNode = new CustomIRPSTNode(child,
+						parentNode.getTreeLevel() + 1);
 				childrenToRemove.add(child);
 			}
 
 			if (child.getExit().equals(parentNode.getExit())) {
-				lastNode = child;
+				customLastNode = new CustomIRPSTNode(child,
+						parentNode.getTreeLevel() + 1);
 				childrenToRemove.add(child);
 			}
 		}
 		children.removeAll(childrenToRemove);
 
-		List<IRPSTNode<DirectedEdge, Vertex>> sortedChildren = new ArrayList<IRPSTNode<DirectedEdge, Vertex>>();
 		if (children.size() == 0) {
 			// Verify if all nodes had the same entry and exit
-			boolean isConditional = firstNode.getEntry().equals(
-					lastNode.getEntry())
-					&& firstNode.getExit().equals(lastNode.getExit());
+			boolean isConditional = customFirstNode.getEntry().equals(
+					customLastNode.getEntry())
+					&& customFirstNode.getExit().equals(
+							customLastNode.getExit());
 
 			// Assign an workflow type to the parent node
 			parentNode.setWorkflowType(WorkflowType.SEQUENCE);
@@ -100,21 +96,22 @@ public abstract class RPSTVisitor extends RPST<DirectedEdge, Vertex> {
 				parentNode.setWorkflowType(WorkflowType.CONDITIONAL);
 			}
 
-			sortedChildren = new ArrayList<IRPSTNode<DirectedEdge, Vertex>>(
-					childrenList);
+			for (IRPSTNode<DirectedEdge, Vertex> node: childrenList) {
+				parentNode.addChildAtIndex(new CustomIRPSTNode(node, parentNode.getTreeLevel() + 1), 0);
+			}
 
 		} else {
-			sortedChildren.add(firstNode);
-			sortedChildren.add(lastNode);
+			parentNode.addChild(customFirstNode);
+			parentNode.addChild(customLastNode);
 
 			while (children.size() > 0) {
 				IRPSTNode<DirectedEdge, Vertex> child = children.remove(0);
 				boolean added = false;
-				
-				for (int i = 0; i < sortedChildren.size(); i++) {
-					IRPSTNode<DirectedEdge, Vertex> node = sortedChildren.get(i);
+
+				for (int i = 0; i < parentNode.getChildren().size(); i++) {
+					IRPSTNode<DirectedEdge, Vertex> node = parentNode.getChildren().get(i);
 					int index = -2;
-					
+
 					if (child.getEntry().equals(node.getExit())) {
 						index = i + 1;
 					}
@@ -122,51 +119,34 @@ public abstract class RPSTVisitor extends RPST<DirectedEdge, Vertex> {
 					if (child.getExit().equals(node.getEntry())) {
 						index = i;
 					}
-										
+
 					if (index != -2) {
-						sortedChildren.add(index, child);
+						CustomIRPSTNode customNode = new CustomIRPSTNode(child,
+								parentNode.getTreeLevel() + 1);
+						parentNode.addChildAtIndex(customNode, index);
 						added = true;
-						i = sortedChildren.size();
+						i = parentNode.getChildren().size();
 					}
-					
 				}
-				
+
 				if (!added) {
 					children.add(child);
 				}
-				
+			}
+
+			parentNode.setWorkflowType(WorkflowType.SEQUENCE);
+			if (customFirstNode.getIRPSTNode().equals(customLastNode.getIRPSTNode())) {
+				parentNode.setWorkflowType(WorkflowType.LOOP);
+				parentNode.removeChild(customLastNode);
 			}
 			
-			parentNode.setWorkflowType(WorkflowType.SEQUENCE);
-			if (firstNode.equals(lastNode)) {
-				parentNode.setWorkflowType(WorkflowType.LOOP);
-				sortedChildren.remove(lastNode);
-			}
 		}
 
-		return getCustomIRPSTNodes(parentNode, sortedChildren);
+		return parentNode.getChildren();
 	}
 
 	public Set<IRPSTNode<DirectedEdge, Vertex>> getChildren(CustomIRPSTNode node) {
 		return getChildren(node.getIRPSTNode());
 	}
 
-	private List<CustomIRPSTNode> getCustomIRPSTNodes(
-			CustomIRPSTNode parentNode,
-			List<IRPSTNode<DirectedEdge, Vertex>> sortedChildren) {
-
-		List<CustomIRPSTNode> customChildren = new ArrayList<CustomIRPSTNode>();
-		for (int i = 0; i < sortedChildren.size(); i++) {
-			CustomIRPSTNode cnode = new CustomIRPSTNode(sortedChildren.get(i),
-					parentNode.getTreeLevel() + 1);
-			cnode.setIndex(i);
-			if (parentNode.isConditional()) {
-				cnode.setCondition(true);
-			}
-
-			customChildren.add(cnode);
-		}
-
-		return customChildren;
-	}
 }
