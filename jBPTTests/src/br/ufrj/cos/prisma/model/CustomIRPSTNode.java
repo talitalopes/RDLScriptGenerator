@@ -217,4 +217,18 @@ public class CustomIRPSTNode extends Vertex implements IRPSTNode<DirectedEdge, V
 		this.children.remove(node);
 	}
 
+	public void sortChildrenForConditional() {
+		List<CustomIRPSTNode> sortedChildren = new ArrayList<CustomIRPSTNode>();
+		for (CustomIRPSTNode child : children) {
+			boolean isTrivial = child.getType().equals(TCType.TRIVIAL);
+			child.setCondition(true);
+			if (isTrivial) {
+				sortedChildren.add(child);
+			} else {
+				sortedChildren.add(0, child);
+			}
+		}
+		children = sortedChildren;
+	}
+
 }
