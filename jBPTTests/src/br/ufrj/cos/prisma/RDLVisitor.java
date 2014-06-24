@@ -18,44 +18,49 @@ public class RDLVisitor extends RPSTVisitor {
 	}
 
 	@Override
-	protected void printNode(CustomIRPSTNode node) {
+	protected String printNode(CustomIRPSTNode node) {
 		String levelTab = StringUtils.repeat("\t", node.getTreeLevel());
 
 		if (node.getWorkflowType().equals(WorkflowType.SEQUENCE)
 				|| node.getWorkflowType().equals(WorkflowType.CONDITIONAL)) {
-			return;
+			return "";
 		}
 
 		if (node.getWorkflowType().equals(WorkflowType.LOOP)) {
-			return;
+			return "";
 		}
 
 		if (node.getWorkflowType().equals(WorkflowType.EDGE)) {
-
+			String message = "";
+			
 			if (!isVisited(node.getEntry())) {
 				if (!node.getEntry().getName().contains("GATEWAY")) {
-					System.out.println(levelTab + node.getEntry().getName());
+					message = levelTab + node.getEntry().getName();
 				}
 				visitedVertexes.add(node.getEntry());
 			}
 
 			if (!isVisited(node.getExit())) {
 				if (!node.getExit().getName().contains("GATEWAY")) {
-					System.out.println(levelTab + node.getExit().getName());
+					message = levelTab + node.getExit().getName();
 				}
 				visitedVertexes.add(node.getExit());
 			}
-			return;
+			
+			return message;
 		}
 
-		String format = "%s [%b %s] %s: (Entry,Exit) -> (%s,%s) - F %s";
+		String format = "%s [%s] (%s,%s)";
 
 		String workflowType = node.getWorkflowType() != null ? node
 				.getWorkflowType().toString() : "";
 
-		System.out.println(String.format(format, levelTab, node.isCondition(),
-				workflowType, node.getName(), node.getEntry(), node.getExit(),
-				node.getFragment()));
+		String message = String.format(format, levelTab, workflowType,
+				node.getEntry(), node.getExit());
+
+		System.out.println(message);
+
+		return message;
 	}
 
 	public boolean isVisited(Vertex v) {

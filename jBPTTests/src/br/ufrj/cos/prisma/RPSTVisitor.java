@@ -16,10 +16,12 @@ import br.ufrj.cos.prisma.utils.StringUtils;
 
 public abstract class RPSTVisitor extends RPST<DirectedEdge, Vertex> {
 	DirectedGraph graph;
+	String processString;
 
 	public RPSTVisitor(DirectedGraph graph) {
 		super(graph);
 		this.graph = graph;
+		this.processString = "";
 	}
 
 	public void traverseRPST() {
@@ -27,19 +29,23 @@ public abstract class RPSTVisitor extends RPST<DirectedEdge, Vertex> {
 		traverseFromNode(customRoot);
 	}
 
+	public String getProcessString() {
+		return this.processString;
+	}
+
 	public void traverseFromNode(CustomIRPSTNode rootnode) {
 		String levelTab = StringUtils.repeat("\t", rootnode.getTreeLevel());
 
 		List<CustomIRPSTNode> children = getSortedChildren(rootnode);
-		printNode(rootnode);
+		this.processString = String.format("%s%s\n", processString, printNode(rootnode));
 
 		boolean hasCondition = false;
 		if (rootnode.getWorkflowType().equals(WorkflowType.LOOP)) {
-			System.out.println(levelTab + "LOOP() {");
+			this.processString = String.format("%s%s\n", processString, levelTab + "LOOP() {");
 			hasCondition = true;
 		} else if (rootnode.getWorkflowType().equals(WorkflowType.SEQUENCE)
 				&& rootnode.isCondition()) {
-			System.out.println(levelTab + "IF()? {");
+			this.processString = String.format("%s%s\n", processString, levelTab + "IF()? {");
 			hasCondition = true;
 		}
 
@@ -53,19 +59,20 @@ public abstract class RPSTVisitor extends RPST<DirectedEdge, Vertex> {
 			boolean isTrivial = child.getType().equals(TCType.TRIVIAL);
 			if (isTrivial) {
 				child.setWorkflowType(WorkflowType.EDGE);
-				printNode(child);
+				this.processString = String.format("%s%s\n", processString,
+						printNode(child));
 				continue;
 			}
 			traverseFromNode(child);
 		}
 
 		if (hasCondition) {
-			System.out.println(levelTab + "}");
+			this.processString = String.format("%s%s\n", processString, levelTab + "}");
 		}
 
 	}
 
-	protected abstract void printNode(CustomIRPSTNode node);
+	protected abstract String printNode(CustomIRPSTNode node);
 
 	private List<CustomIRPSTNode> getSortedChildren(CustomIRPSTNode parentNode) {
 		Set<IRPSTNode<DirectedEdge, Vertex>> childrenList = getChildren(parentNode);
@@ -117,9 +124,17 @@ public abstract class RPSTVisitor extends RPST<DirectedEdge, Vertex> {
 			parentNode.addChild(customFirstNode);
 			parentNode.addChild(customLastNode);
 
+			IRPSTNode<DirectedEdge, Vertex> lastChild = null;
 			while (children.size() > 0) {
 				IRPSTNode<DirectedEdge, Vertex> child = children.remove(0);
 				boolean added = false;
+
+				if (child == lastChild) {
+					System.out.println("while: " + lastChild);
+					parentNode.addChild(new CustomIRPSTNode(child, parentNode
+							.getTreeLevel() + 1));
+					continue;
+				}
 
 				for (int i = 0; i < parentNode.getChildren().size(); i++) {
 					IRPSTNode<DirectedEdge, Vertex> node = parentNode
@@ -143,6 +158,7 @@ public abstract class RPSTVisitor extends RPST<DirectedEdge, Vertex> {
 					}
 				}
 
+				lastChild = child;
 				if (!added) {
 					children.add(child);
 				}
