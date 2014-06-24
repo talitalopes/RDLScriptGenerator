@@ -11,6 +11,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.jbpt.graph.DirectedGraph;
 import org.jbpt.pm.Activity;
+import org.jbpt.pm.AndGateway;
 import org.jbpt.pm.ControlFlow;
 import org.jbpt.pm.FlowNode;
 import org.jbpt.pm.ProcessModel;
@@ -100,8 +101,10 @@ public class XPDLModel {
 			
 			if (name.equals(Constants.EXCLUSIVE_GATEWAY)) {
 				addXORGateway(id, name);
+			} else if (name.equals(Constants.INCLUSIVE_GATEWAY)) {
+				addAndGateway(id, name);
 			} else if (name.contains("EVENT")) {
-				continue;
+				continue;	
 			} else {
 				addProcessActivity(id, name);
 			}
@@ -119,6 +122,15 @@ public class XPDLModel {
 	
 	private void addXORGateway(String id, String name) {
 		XorGateway gateway = new XorGateway(name);
+		String description = String.format("%s | %s", id, name);
+		gateway.setDescription(description);
+		
+		flowNodesMap.put(id, gateway);
+		model.addFlowNode(gateway);
+	}
+	
+	private void addAndGateway(String id, String name) {
+		AndGateway gateway = new AndGateway(name);
 		String description = String.format("%s | %s", id, name);
 		gateway.setDescription(description);
 		
