@@ -13,18 +13,26 @@ public class RPSTMain {
 		boolean test = false;
 		ProcessModel p = testCompleteModel();
 
-		XPDLModel xpdlModel = new XPDLModel("input/gef5.xpdl");
+		XPDLModel xpdlModel = new XPDLModel("input/graphiti-10apps-ordered-filtered.xpdl");
 		
 		DirectedGraph graph = xpdlModel.getGraph();
 		if (test) {
 			graph = getGraph(p);
 		}
 		
+		
+		String process1 = visitProcessModel(graph);
+		System.out.println(process1);
+		
+	}
+
+	private static String visitProcessModel(DirectedGraph graph) {
 		System.out.println(">>>> RPST tree \n");
 		RDLVisitor rpst = new RDLVisitor(graph);
 		rpst.traverseRPST();
+		return rpst.getProcessString();
 	}
-
+	
 	public static DirectedGraph getGraph(ProcessModel p) {
 		DirectedGraph graph = new DirectedGraph();
 
