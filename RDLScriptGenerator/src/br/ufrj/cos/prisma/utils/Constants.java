@@ -10,6 +10,6 @@ public class Constants {
 	public static final String XPDL_ATTRIBUTE_TARGET = "To";
 	public static final String EXCLUSIVE_GATEWAY = "EXCLUSIVE-GATEWAY";
 	public static final String INCLUSIVE_GATEWAY = "INCLUSIVE-GATEWAY";
-	public static final String XPDL_INPUT_PATH = "input/gef-10-apps-ordered-filtered.xpdl"; // "input/graphiti-10apps-ordered-filtered.xpdl"
+	public static final String XPDL_INPUT_PATH = "input/gef-10-apps-ordered-filtered2.xpdl"; // "input/graphiti-10apps-ordered-filtered.xpdl"
 
 }

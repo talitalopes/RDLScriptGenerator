@@ -11,6 +11,7 @@ import br.ufrj.cos.prisma.utils.StringUtils;
 
 public class RDLVisitor extends RPSTVisitor {
 	Set<Vertex> visitedVertexes;
+	private boolean DEBUG = true;
 
 	public RDLVisitor(DirectedGraph graph) {
 		super(graph);
@@ -21,35 +22,36 @@ public class RDLVisitor extends RPSTVisitor {
 	protected String printNode(CustomIRPSTNode node) {
 		String levelTab = StringUtils.repeat("\t", node.getTreeLevel());
 
-		if (node.getWorkflowType().equals(WorkflowType.SEQUENCE)
-				|| node.getWorkflowType().equals(WorkflowType.CONDITIONAL)) {
-			return "";
-		}
-
-		if (node.getWorkflowType().equals(WorkflowType.LOOP)) {
-			return "";
-		}
-
-		if (node.getWorkflowType().equals(WorkflowType.EDGE)) {
-			String message = "";
-			
-			if (!isVisited(node.getEntry())) {
-				if (!node.getEntry().getName().contains("GATEWAY")) {
-					message = levelTab + node.getEntry().getName();
-				}
-				visitedVertexes.add(node.getEntry());
+		if (!DEBUG) {
+			if (node.getWorkflowType().equals(WorkflowType.SEQUENCE)
+					|| node.getWorkflowType().equals(WorkflowType.CONDITIONAL)) {
+				return "";
 			}
 
-			if (!isVisited(node.getExit())) {
-				if (!node.getExit().getName().contains("GATEWAY")) {
-					message = levelTab + node.getExit().getName();
-				}
-				visitedVertexes.add(node.getExit());
+			if (node.getWorkflowType().equals(WorkflowType.LOOP)) {
+				return "";
 			}
-			
-			return message;
-		}
 
+			if (node.getWorkflowType().equals(WorkflowType.EDGE)) {
+				String message = "";
+
+				if (!isVisited(node.getEntry())) {
+					if (!node.getEntry().getName().contains("GATEWAY")) {
+						message = levelTab + node.getEntry().getName();
+					}
+					visitedVertexes.add(node.getEntry());
+				}
+
+				if (!isVisited(node.getExit())) {
+					if (!node.getExit().getName().contains("GATEWAY")) {
+						message = levelTab + node.getExit().getName();
+					}
+					visitedVertexes.add(node.getExit());
+				}
+
+				return message;
+			}
+		}
 		String format = "%s [%s] (%s,%s)";
 
 		String workflowType = node.getWorkflowType() != null ? node
