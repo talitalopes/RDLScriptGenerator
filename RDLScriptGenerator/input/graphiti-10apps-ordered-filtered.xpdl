@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package Id="XPDL_BPMN Diagram" Name="BPMN Diagram">
+	<PackageHeader>
+	<XPDLVersion>
+	2.0
+</XPDLVersion>
+<Vendor>
+	ProM
+</Vendor>
+<Created>
+	23/06/2014 02:55
+</Created>
+<Description>
+	ProM Mined BPMN Model
+</Description>
+<Documentation>
+	ProM Mined BPMN Model
+</Documentation>
+
+</PackageHeader>
+<Pools/>
+<WorkflowProcesses>
+	<WorkflowProcess Id="MainProcess-WF_BPMN Diagram" Name="BPMN Diagram" AccessLevel="PUBLIC">
+	<ProcessHeader>
+	<Created>
+	23/06/2014 02:55
+</Created>
+<Priority>
+	Normal
+</Priority>
+
+</ProcessHeader>
+<RedefinableHeader>
+	<Author>
+	ProM
+</Author>
+<Version>
+	2.0
+</Version>
+
+</RedefinableHeader>
+<XpdlParticipants>
+	<Participant Id="currentOwner">
+	<ParticipantType Type="ROLE"/>
+
+</Participant>
+
+</XpdlParticipants>
+<ActivitySets/>
+<Activities>
+	<Activity Id="202685457" Name="CLASS_EXTENSION_org.eclipse.graphiti.dt.AbstractDiagramTypeProvider">
+	<NodeGraphicsInfos>
+	<NodeGraphicsInfo ToolId="ProM" Height="80" Width="140">
+	<Coordinates XCoordinate="321" YCoordinate="175"/>
+
+</NodeGraphicsInfo>
+
+</NodeGraphicsInfos>
+
+</Activity>
+<Activity Id="1717072983" Name="START">
+	<NodeGraphicsInfos>
+	<NodeGraphicsInfo ToolId="ProM" Height="80" Width="140">
+	<Coordinates XCoordinate="131" YCoordinate="172"/>
+
+</NodeGraphicsInfo>
+
+</NodeGraphicsInfos>
+
+</Activity>
+<Activity Id="965123025" Name="CLASS_EXTENSION_org.eclipse.graphiti.features.impl.AbstractCreateConnectionFeature">
+	<NodeGraphicsInfos>
+	<NodeGraphicsInfo ToolId="ProM" Height="80" Width="140">
+	<Coordinates XCoordinate="1721" YCoordinate="143"/>
+
+</NodeGraphicsInfo>
+
+</NodeGraphicsInfos>
+
+</Activity>
+<Activity Id="737544227" Name="CLASS_EXTENSION_org.eclipse.graphiti.features.impl.AbstractCreateFeature">
+	<NodeGraphicsInfos>
+	<NodeGraphicsInfo ToolId="ProM" Height="80" Width="140">
+	<Coordinates XCoordinate="1371" YCoordinate="161"/>
+
+</NodeGraphicsInfo>
+
+</NodeGraphicsInfos>
+
+</Activity>
+<Activity Id="-1486340949" Name="CLASS_EXTENSION_org.eclipse.graphiti.features.custom.AbstractCustomFeature">
+	<NodeGraphicsInfos>
+	<NodeGraphicsInfo ToolId="ProM" Height="80" Width="140">
+	<Coordinates XCoordinate="2741" YCoordinate="131"/>
+
+</NodeGraphicsInfo>
+
+</NodeGraphicsInfos>
+
+</Activity>
+<Activity Id="381582405" Name="END">
+	<NodeGraphicsInfos>
+	<NodeGraphicsInfo ToolId="ProM" Height="80" Width="140">
+	<Coordinates XCoordinate="3251" YCoordinate="183"/>
+
+</NodeGraphicsInfo>
+
+</NodeGraphicsInfos>
+
+</Activity>
+<Activity Id="-872924240" Name="CLASS_EXTENSION_org.eclipse.graphiti.features.impl.AbstractAddShapeFeature">
+	<NodeGraphicsInfos>
+	<NodeGraphicsInfo ToolId="ProM" Height="80" Width="140">
+	<Coordinates XCoordinate="511" YCoordinate="181"/>
+
+</NodeGraphicsInfo>
+
+</NodeGraphicsInfos>
+
+</Activity>
+<Activity Id="776217005" Name="CLASS_EXTENSION_org.eclipse.graphiti.features.impl.AbstractAddFeature">
+	<NodeGraphicsInfos>
+	<NodeGraphicsInfo ToolId="ProM" Height="80" Width="140">
+	<Coordinates XCoordinate="861" YCoordinate="161"/>
+
+</NodeGraphicsInfo>
+
+</NodeGraphicsInfos>
+
+</Activity>
+<Activity Id="-1930255582" Name="CLASS_EXTENSION_org.eclipse.graphiti.features.impl.AbstractUpdateFeature">
+	<NodeGraphicsInfos>
+	<NodeGraphicsInfo ToolId="ProM" Height="80" Width="140">
+	<Coordinates XCoordinate="2231" YCoordinate="149"/>
+
+</NodeGraphicsInfo>
+
+</NodeGraphicsInfos>
+
+</Activity>
+<Activity Id="2078482309" Name="START EVENT">
+	<Event>
+	<StartEvent Trigger="None"/>
+
+</Event>
+<NodeGraphicsInfos>
+	<NodeGraphicsInfo ToolId="ProM" Height="80" Width="80">
+	<Coordinates XCoordinate="1" YCoordinate="172"/>
+
+</NodeGraphicsInfo>
+
+</NodeGraphicsInfos>
+
+</Activity>
+<Activity Id="-745130249" Name="END EVENT">
+	<Event>
+	<EndEvent/>
+
+</Event>
+<NodeGraphicsInfos>
+	<NodeGraphicsInfo ToolId="ProM" Height="80" Width="80">
+	<Coordinates XCoordinate="3441" YCoordinate="183"/>
+
+</NodeGraphicsInfo>
+
+</NodeGraphicsInfos>
+
+</Activity>
+<Activity Id="-1102425031" Name="EXCLUSIVE-GATEWAY">
+	<Route GatewayType="XOR" MarkerVisible="true"/>
+<TransitionRestrictions>
+	<TransitionRestriction>
+	<Split Type="XOR">
+	<TransitionRefs>
+	<TransitionRef Id="-211856413" Name="-211856413"/>
+<TransitionRef Id="-664820726" Name="-664820726"/>
+
+</TransitionRefs>
+
+</Split>
+
+</TransitionRestriction>
+
+</TransitionRestrictions>
+<NodeGraphicsInfos>
+	<NodeGraphicsInfo ToolId="ProM" Height="110" Width="110">
+	<Coordinates XCoordinate="1911" YCoordinate="116"/>
+
+</NodeGraphicsInfo>
+
+</NodeGraphicsInfos>
+
+</Activity>
+<Activity Id="31814755" Name="EXCLUSIVE-GATEWAY">
+	<Route GatewayType="XOR" MarkerVisible="true"/>
+<TransitionRestrictions>
+	<TransitionRestriction>
+	<Split Type="XOR">
+	<TransitionRefs>
+	<TransitionRef Id="-1855948109" Name="-1855948109"/>
+<TransitionRef Id="-1749399475" Name="-1749399475"/>
+<TransitionRef Id="520317861" Name="520317861"/>
+
+</TransitionRefs>
+
+</Split>
+
+</TransitionRestriction>
+
+</TransitionRestrictions>
+<NodeGraphicsInfos>
+	<NodeGraphicsInfo ToolId="ProM" Height="110" Width="110">
+	<Coordinates XCoordinate="1561" YCoordinate="172"/>
+
+</NodeGraphicsInfo>
+
+</NodeGraphicsInfos>
+
+</Activity>
+<Activity Id="674574578" Name="EXCLUSIVE-GATEWAY">
+	<Route GatewayType="XOR" MarkerVisible="true"/>
+<TransitionRestrictions>
+	<TransitionRestriction>
+	<Split Type="XOR">
+	<TransitionRefs>
+	<TransitionRef Id="-37344283" Name="-37344283"/>
+<TransitionRef Id="1780069225" Name="1780069225"/>
+
+</TransitionRefs>
+
+</Split>
+
+</TransitionRestriction>
+
+</TransitionRestrictions>
+<NodeGraphicsInfos>
+	<NodeGraphicsInfo ToolId="ProM" Height="110" Width="110">
+	<Coordinates XCoordinate="2931" YCoordinate="131"/>
+
+</NodeGraphicsInfo>
+
+</NodeGraphicsInfos>
+
+</Activity>
+<Activity Id="-2104660781" Name="EXCLUSIVE-GATEWAY">
+	<Route GatewayType="XOR" MarkerVisible="true"/>
+<TransitionRestrictions>
+	<TransitionRestriction>
+	<Split Type="XOR">
+	<TransitionRefs>
+	<TransitionRef Id="-406718481" Name="-406718481"/>
+<TransitionRef Id="-539225234" Name="-539225234"/>
+
+</TransitionRefs>
+
+</Split>
+
+</TransitionRestriction>
+
+</TransitionRestrictions>
+<NodeGraphicsInfos>
+	<NodeGraphicsInfo ToolId="ProM" Height="110" Width="110">
+	<Coordinates XCoordinate="1051" YCoordinate="179"/>
+
+</NodeGraphicsInfo>
+
+</NodeGraphicsInfos>
+
+</Activity>
+<Activity Id="433596189" Name="EXCLUSIVE-GATEWAY">
+	<Route GatewayType="XOR" MarkerVisible="true"/>
+<TransitionRestrictions>
+	<TransitionRestriction>
+	<Split Type="XOR">
+	<TransitionRefs>
+	<TransitionRef Id="-972231682" Name="-972231682"/>
+<TransitionRef Id="488221186" Name="488221186"/>
+<TransitionRef Id="-1390849851" Name="-1390849851"/>
+
+</TransitionRefs>
+
+</Split>
+
+</TransitionRestriction>
+
+</TransitionRestrictions>
+<NodeGraphicsInfos>
+	<NodeGraphicsInfo ToolId="ProM" Height="110" Width="110">
+	<Coordinates XCoordinate="2421" YCoordinate="158"/>
+
+</NodeGraphicsInfo>
+
+</NodeGraphicsInfos>
+
+</Activity>
+<Activity Id="-318798154" Name="EXCLUSIVE-GATEWAY">
+	<Route GatewayType="XOR" MarkerVisible="true"/>
+<TransitionRestrictions>
+	<TransitionRestriction>
+	<Join Type="XOR"/>
+
+</TransitionRestriction>
+
+</TransitionRestrictions>
+<NodeGraphicsInfos>
+	<NodeGraphicsInfo ToolId="ProM" Height="110" Width="110">
+	<Coordinates XCoordinate="1211" YCoordinate="180"/>
+
+</NodeGraphicsInfo>
+
+</NodeGraphicsInfos>
+
+</Activity>
+<Activity Id="264218382" Name="EXCLUSIVE-GATEWAY">
+	<Route GatewayType="XOR" MarkerVisible="true"/>
+<TransitionRestrictions>
+	<TransitionRestriction>
+	<Join Type="XOR"/>
+
+</TransitionRestriction>
+
+</TransitionRestrictions>
+<NodeGraphicsInfos>
+	<NodeGraphicsInfo ToolId="ProM" Height="110" Width="110">
+	<Coordinates XCoordinate="2581" YCoordinate="131"/>
+
+</NodeGraphicsInfo>
+
+</NodeGraphicsInfos>
+
+</Activity>
+<Activity Id="1375607793" Name="EXCLUSIVE-GATEWAY">
+	<Route GatewayType="XOR" MarkerVisible="true"/>
+<TransitionRestrictions>
+	<TransitionRestriction>
+	<Join Type="XOR"/>
+
+</TransitionRestriction>
+
+</TransitionRestrictions>
+<NodeGraphicsInfos>
+	<NodeGraphicsInfo ToolId="ProM" Height="110" Width="110">
+	<Coordinates XCoordinate="3091" YCoordinate="171"/>
+
+</NodeGraphicsInfo>
+
+</NodeGraphicsInfos>
+
+</Activity>
+<Activity Id="1771102945" Name="EXCLUSIVE-GATEWAY">
+	<Route GatewayType="XOR" MarkerVisible="true"/>
+<TransitionRestrictions>
+	<TransitionRestriction>
+	<Join Type="XOR"/>
+
+</TransitionRestriction>
+
+</TransitionRestrictions>
+<NodeGraphicsInfos>
+	<NodeGraphicsInfo ToolId="ProM" Height="110" Width="110">
+	<Coordinates XCoordinate="701" YCoordinate="175"/>
+
+</NodeGraphicsInfo>
+
+</NodeGraphicsInfos>
+
+</Activity>
+<Activity Id="1087667056" Name="EXCLUSIVE-GATEWAY">
+	<Route GatewayType="XOR" MarkerVisible="true"/>
+<TransitionRestrictions>
+	<TransitionRestriction>
+	<Join Type="XOR"/>
+
+</TransitionRestriction>
+
+</TransitionRestrictions>
+<NodeGraphicsInfos>
+	<NodeGraphicsInfo ToolId="ProM" Height="110" Width="110">
+	<Coordinates XCoordinate="2071" YCoordinate="153"/>
+
+</NodeGraphicsInfo>
+
+</NodeGraphicsInfos>
+
+</Activity>
+
+</Activities>
+<Transitions>
+	<Transition Id="-995464785" From="2078482309" To="1717072983">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+<Transition Id="-1969275451" From="381582405" To="-745130249">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+<Transition Id="427791358" From="202685457" To="-872924240">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+<Transition Id="-1488095535" From="1717072983" To="202685457">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+<Transition Id="573184947" From="965123025" To="-1102425031">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+<Transition Id="630837186" From="737544227" To="31814755">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+<Transition Id="-1855948109" From="31814755" To="965123025">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+<Transition Id="-1000653880" From="-1486340949" To="674574578">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+<Transition Id="946416668" From="776217005" To="-2104660781">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+<Transition Id="142345912" From="-1930255582" To="433596189">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+<Transition Id="-406718481" From="-2104660781" To="-318798154">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+<Transition Id="-1749399475" From="31814755" To="-318798154">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+<Transition Id="-765273614" From="-318798154" To="737544227">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+<Transition Id="-37344283" From="674574578" To="264218382">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+<Transition Id="-972231682" From="433596189" To="264218382">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+<Transition Id="-1529514721" From="264218382" To="-1486340949">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+<Transition Id="-211856413" From="-1102425031" To="1375607793">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+<Transition Id="520317861" From="31814755" To="1375607793">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+<Transition Id="1780069225" From="674574578" To="1375607793">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+<Transition Id="488221186" From="433596189" To="1375607793">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+<Transition Id="1565849894" From="1375607793" To="381582405">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+<Transition Id="-539225234" From="-2104660781" To="1771102945">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+<Transition Id="1123177704" From="-872924240" To="1771102945">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+<Transition Id="-260026887" From="1771102945" To="776217005">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+<Transition Id="-664820726" From="-1102425031" To="1087667056">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+<Transition Id="-1390849851" From="433596189" To="1087667056">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+<Transition Id="168969348" From="1087667056" To="-1930255582">
+	<ConnectorGraphicsInfos>
+	<ConnectorGraphicsInfo ToolId="ProM" BorderColor="0"/>
+
+</ConnectorGraphicsInfos>
+
+</Transition>
+
+</Transitions>
+
+</WorkflowProcess>
+
+</WorkflowProcesses>
+
+</Package>
