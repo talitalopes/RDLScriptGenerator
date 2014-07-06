@@ -4,7 +4,7 @@ RDL Script Generator
 Project to create RDL scripts from XPDL projects. It uses the jbpt lib to create a RPST which can be traversed to discover sequences and loops. The algorithm to create the RPST does not have good results when dealing with unstructured processes.
 
 
-jBPT
+###jBPT
 
 The jBPT lib can be found at https://code.google.com/p/jbpt/
 
