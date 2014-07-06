@@ -7,13 +7,15 @@ import org.jbpt.pm.FlowNode;
 import org.jbpt.pm.ProcessModel;
 import org.jbpt.pm.XorGateway;
 
+import br.ufrj.cos.prisma.utils.Constants;
+
 public class RPSTMain {
 
 	public static void main(String[] args) {
 		boolean test = false;
 		ProcessModel p = testCompleteModel();
 
-		XPDLModel xpdlModel = new XPDLModel("input/graphiti-10apps-ordered-filtered.xpdl");
+		XPDLModel xpdlModel = new XPDLModel(Constants.XPDL_INPUT_PATH);
 		
 		DirectedGraph graph = xpdlModel.getGraph();
 		if (test) {
