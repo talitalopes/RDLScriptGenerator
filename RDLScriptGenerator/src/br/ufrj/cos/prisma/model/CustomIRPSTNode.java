@@ -228,7 +228,16 @@ public class CustomIRPSTNode extends Vertex implements IRPSTNode<DirectedEdge, V
 				sortedChildren.add(0, child);
 			}
 		}
+		
+		for (CustomIRPSTNode child: sortedChildren) {
+			child.setIndex(index);
+			index++;
+		}
 		children = sortedChildren;
 	}
 
+	@Override
+	public String toString() {
+		return getName();
+	}
 }

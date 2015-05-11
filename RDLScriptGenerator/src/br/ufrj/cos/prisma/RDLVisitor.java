@@ -11,7 +11,7 @@ import br.ufrj.cos.prisma.utils.StringUtils;
 
 public class RDLVisitor extends RPSTVisitor {
 	Set<Vertex> visitedVertexes;
-	private boolean DEBUG = true;
+	private boolean DEBUG = false;
 
 	public RDLVisitor(DirectedGraph graph) {
 		super(graph);
@@ -20,8 +20,11 @@ public class RDLVisitor extends RPSTVisitor {
 
 	@Override
 	protected String printNode(CustomIRPSTNode node) {
-		String levelTab = StringUtils.repeat("\t", node.getTreeLevel());
-
+		String levelTab = StringUtils.repeat("", node.getTreeLevel());
+		if (node.getWorkflowType().equals(WorkflowType.SEQUENCE)) {
+			System.out.println("children count: " + node.getChildren().size());
+		}
+		
 		if (!DEBUG) {
 			if (node.getWorkflowType().equals(WorkflowType.SEQUENCE)
 					|| node.getWorkflowType().equals(WorkflowType.CONDITIONAL)) {
@@ -37,19 +40,24 @@ public class RDLVisitor extends RPSTVisitor {
 
 				if (!isVisited(node.getEntry())) {
 					if (!node.getEntry().getName().contains("GATEWAY")) {
-						message = levelTab + node.getEntry().getName();
+						message = node.getEntry().getName();
 					}
 					visitedVertexes.add(node.getEntry());
 				}
 
 				if (!isVisited(node.getExit())) {
 					if (!node.getExit().getName().contains("GATEWAY")) {
-						message = levelTab + node.getExit().getName();
+						message = node.getExit().getName();
 					}
 					visitedVertexes.add(node.getExit());
 				}
 
-				return message;
+				if (message.contains("CLASS_EXTENSION")) {
+					message = message.replace("CLASS_EXTENSION_", "");
+					message = "CLASS_EXTENSION(\"" + message + "\", \"?\")";
+				}
+				
+				return levelTab + message;
 			}
 		}
 		String format = "%s [%s] (%s,%s)";

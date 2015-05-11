@@ -1,5 +1,7 @@
 package br.ufrj.cos.prisma;
 
+import java.io.File;
+
 import org.jbpt.graph.DirectedGraph;
 import org.jbpt.pm.Activity;
 import org.jbpt.pm.ControlFlow;
@@ -10,22 +12,34 @@ import org.jbpt.pm.XorGateway;
 import br.ufrj.cos.prisma.utils.Constants;
 
 public class RPSTMain {
-
+	
 	public static void main(String[] args) {
 		boolean test = false;
 		ProcessModel p = testCompleteModel();
 
-		XPDLModel xpdlModel = new XPDLModel(Constants.XPDL_INPUT_PATH);
-		
-		DirectedGraph graph = xpdlModel.getGraph();
-		if (test) {
-			graph = getGraph(p);
+		File[] xpdlFiles = listFiles(Constants.XPDL_INPUTS_ROOT_PATH);
+		for (int i = 0; i < xpdlFiles.length; i++) {
+			XPDLModel xpdlModel = new XPDLModel(xpdlFiles[i].getAbsolutePath());
+
+			DirectedGraph graph = xpdlModel.getGraph();
+			if (test) {
+				graph = getGraph(p);
+			}
+
+			String process1 = visitProcessModel(graph);
+			System.out.println(process1);
 		}
 		
-		
-		String process1 = visitProcessModel(graph);
-		System.out.println(process1);
-		
+	}
+
+	private static File[] listFiles(String path) {
+		File root = new File(path);
+		File[] list = root.listFiles();
+
+		if (list == null)
+			return null;
+
+		return list;
 	}
 
 	private static String visitProcessModel(DirectedGraph graph) {
@@ -34,7 +48,7 @@ public class RPSTMain {
 		rpst.traverseRPST();
 		return rpst.getProcessString();
 	}
-	
+
 	public static DirectedGraph getGraph(ProcessModel p) {
 		DirectedGraph graph = new DirectedGraph();
 
@@ -47,7 +61,7 @@ public class RPSTMain {
 
 	public static ProcessModel testSegmentation() {
 		ProcessModel p = new ProcessModel();
-		
+
 		// Create the tasks
 		Activity start = new Activity("Start");
 		Activity a0 = new Activity("0");
@@ -58,13 +72,13 @@ public class RPSTMain {
 		Activity a15 = new Activity("15");
 		Activity a16 = new Activity("16");
 		Activity end = new Activity("End");
-		
+
 		// Create gateways
 		XorGateway s9 = new XorGateway("9");
 		XorGateway s10 = new XorGateway("10");
 		XorGateway s13 = new XorGateway("13");
 		XorGateway s17 = new XorGateway("17");
-		
+
 		p.addControlFlow(start, a0);
 		p.addControlFlow(a0, s9);
 		p.addControlFlow(s9, b1);
@@ -80,10 +94,10 @@ public class RPSTMain {
 		p.addControlFlow(a16, s17);
 		p.addControlFlow(s13, s17);
 		p.addControlFlow(s17, end);
-		
+
 		return p;
 	}
-	
+
 	public static ProcessModel testLoops() {
 		ProcessModel p = new ProcessModel();
 
@@ -112,10 +126,10 @@ public class RPSTMain {
 
 		return p;
 	}
-	
+
 	public static ProcessModel testCompleteModel() {
 		ProcessModel p = new ProcessModel();
-		
+
 		// Create the tasks
 		Activity start = new Activity("Start");
 		Activity a0 = new Activity("0");
@@ -125,18 +139,18 @@ public class RPSTMain {
 		Activity a15 = new Activity("15");
 		Activity a16 = new Activity("16");
 		Activity end = new Activity("End");
-		
+
 		// Create gateways
 		XorGateway s9 = new XorGateway("9");
 		XorGateway s10 = new XorGateway("10");
 		XorGateway s13 = new XorGateway("13");
 		XorGateway s17 = new XorGateway("17");
-		
+
 		p.addControlFlow(start, a0);
 		p.addControlFlow(a0, s9);
-//		p.addControlFlow(s9, b1);
+		// p.addControlFlow(s9, b1);
 		p.addControlFlow(s9, s17);
-//		p.addControlFlow(b1, s10);
+		// p.addControlFlow(b1, s10);
 		p.addControlFlow(s10, a11);
 		p.addControlFlow(s10, s17);
 		p.addControlFlow(a11, a12);
@@ -147,7 +161,7 @@ public class RPSTMain {
 		p.addControlFlow(a16, s17);
 		p.addControlFlow(s13, s17);
 		p.addControlFlow(s17, end);
-		
+
 		// Create the tasks
 		Activity la1 = new Activity("l1");
 		Activity la3 = new Activity("l3");
@@ -170,13 +184,13 @@ public class RPSTMain {
 		p.addControlFlow(la6, ls7);
 		p.addControlFlow(ls7, ls5);
 		p.addControlFlow(ls7, la8);
-		
+
 		p.addControlFlow(s9, la1);
 		p.addControlFlow(la8, s10);
-		
+
 		return p;
 	}
-	
+
 	public static ProcessModel createTestProcess() {
 		// Create the process graph
 		ProcessModel p = new ProcessModel();
@@ -209,5 +223,5 @@ public class RPSTMain {
 
 		return p;
 	}
-	
+
 }

@@ -34,10 +34,13 @@ public abstract class RPSTVisitor extends RPST<DirectedEdge, Vertex> {
 	}
 
 	public void traverseFromNode(CustomIRPSTNode rootnode) {
-		String levelTab = StringUtils.repeat("\t", rootnode.getTreeLevel());
+		String levelTab = StringUtils.repeat("", rootnode.getTreeLevel());
 
 		List<CustomIRPSTNode> children = getSortedChildren(rootnode);
-		this.processString = String.format("%s%s\n", processString, printNode(rootnode));
+		String rootnodeStr = printNode(rootnode);
+		if (rootnodeStr.length() > 0) {
+			this.processString = String.format("%s%s\n", processString, rootnodeStr);
+		}
 
 		boolean hasCondition = false;
 		if (rootnode.getWorkflowType().equals(WorkflowType.LOOP)) {
@@ -45,24 +48,35 @@ public abstract class RPSTVisitor extends RPST<DirectedEdge, Vertex> {
 			hasCondition = true;
 		} else if (rootnode.getWorkflowType().equals(WorkflowType.SEQUENCE)
 				&& rootnode.isCondition()) {
-			this.processString = String.format("%s%s\n", processString, levelTab + "IF()? {");
+
+			String conditionalStatement = (rootnode.getIndex() == 0) ? "IF ()?" : "ELSE IF () {";			
+			this.processString = String.format("%s%s\n", processString, levelTab + conditionalStatement);
 			hasCondition = true;
 		}
 
-		// sort children by type inside a conditional SEQUENCE -> EDGE
+		
 		if (rootnode.isConditional()) {
+			// sort children by type inside a conditional SEQUENCE -> EDGE
 			rootnode.sortChildrenForConditional();
-			children = rootnode.getChildren();
+			children = rootnode.getChildren();			
 		}
 
+		int index = 0;
 		for (CustomIRPSTNode child : children) {
 			boolean isTrivial = child.getType().equals(TCType.TRIVIAL);
 			if (isTrivial) {
+				
 				child.setWorkflowType(WorkflowType.EDGE);
-				this.processString = String.format("%s%s\n", processString,
-						printNode(child));
+				String nodeStr = printNode(child);
+				
+				if (nodeStr.length() > 0) {
+					this.processString = String.format("%s%s\n", processString,
+						nodeStr);
+				}
 				continue;
 			}
+			child.setIndex(index);
+			index++;
 			traverseFromNode(child);
 		}
 
